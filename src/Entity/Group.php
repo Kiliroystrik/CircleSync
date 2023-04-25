@@ -22,6 +22,9 @@ class Group
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groupes')]
     private Collection $users;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
 
     public function __construct()
     {
@@ -87,6 +90,18 @@ class Group
         if ($this->users->removeElement($user)) {
             $user->removeGroupe($this);
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
