@@ -22,9 +22,6 @@ class GroupType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false, // ajout de cette option pour éviter un bug dans la gestion des relations ManyToMany
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Save'
             ]);
     }
 

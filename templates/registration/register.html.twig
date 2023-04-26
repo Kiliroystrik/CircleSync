@@ -1,11 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
-{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block body %}
-	<h1>Register</h1>
+    <div class="container mx-auto px-4 py-16">
+        <h1 class="text-3xl font-semibold mb-6">Register</h1>
+        {{ form_start(registrationForm) }}
+        <div class="space-y-4">
+            {{ form_row(registrationForm.email, { 'label': 'Email', 'attr': { 'class': 'w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:border-blue-500' } }) }}
+            {{ form_row(registrationForm.plainPassword, { 'label': 'Password', 'attr': { 'class': 'w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:border-blue-500' } }) }}
+            {{ form_row(registrationForm.firstname, { 'label': 'First Name', 'attr': { 'class': 'w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:border-blue-500' } }) }}
+            {{ form_row(registrationForm.lastname, { 'label': 'Last Name', 'attr': { 'class': 'w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:border-blue-500' } }) }}
+            {{ form_row(registrationForm.birthdate, { 'label': 'Date de naissance', 'attr': { 'class': 'w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:border-blue-500' } }) }}
+            {{ form_row(registrationForm.agreeTerms, { 'label': 'Agree to terms', 'attr': { 'class': 'form-checkbox text-blue-600 rounded focus:outline-none focus:border-blue-500' } }) }}
+        </div>
 
-	{{ form_start(registrationForm) }}
-	{{ form_end(registrationForm) }}
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}

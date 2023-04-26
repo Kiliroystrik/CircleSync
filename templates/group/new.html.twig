@@ -3,9 +3,11 @@
 {% block title %}New Group{% endblock %}
 
 {% block body %}
-    <h1>Create new Group</h1>
+    <div class="container mx-auto px-4 py-16">
+        <h1 class="text-3xl font-semibold mb-6">Create new Group</h1>
 
-    {{ include('group/_form.html.twig') }}
+        {{ include('group/_form.html.twig') }}
 
-    <a href="{{ path('app_group_index') }}">back to list</a>
+        <a href="{{ path('app_group_index') }}" class="text-blue-600 hover:text-blue-500 mt-4 inline-block">Back to list</a>
+    </div>
 {% endblock %}
