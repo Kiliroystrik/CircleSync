@@ -16,11 +16,11 @@
 		{% endblock %}
 	</head>
 	<body>
-		{% if app.user %}
-			<header>
-				<nav class="navbar">
-					<h2>CircleSync</h2>
-					<ul class="navbar-nav">
+		<header>
+			<nav class="navbar">
+				<h2>CircleSync</h2>
+				<ul class="navbar-nav">
+					{% if app.user %}
 						<li class="nav-item">
 							<a href="{{ path('app_home') }}" class="nav-link">Accueil</a>
 						</li>
@@ -28,28 +28,51 @@
 						<li class="nav-item">
 							<a href="{{ path('app_logout') }}" class="nav-link">Se déconnecter</a>
 						</li>
-					</ul>
+					{% else %}
+						<li class="nav-item">
+							<a href="{{ path('app_login') }}" class="nav-link">Se connecter</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_register') }}" class="nav-link">S'inscrire</a>
+						</li>
+					{% endif %}
+				</ul>
+				{% if app.user %}
 					<h3>Bienvenu
 						{{ app.user.lastname }}</h3>
-				</nav>
-			</header>
+					{# <div class="avatar_profile">
+										                    {% if app.user.image.url %}
+										                    {% else %}
+										                        <img src="{{ asset('assets/css/style.css')}}" alt="Profile">
+										                    {% endif %}
+										                </div> #}
+				{% endif %}
+			</nav>
+		</header>
 
+		{% if app.user %}
 			<div class="page-container">
 				<aside class="sidebar">
 					<h3>Mes groupes</h3>
 					<ul>
-						{% for group in groups %}
+						{% for group in app.user.groupes %}
 							<li>
 								<a href="{{ path('app_home', {'id': group.id}) }}">{{ group.name }}</a>
 							</li>
 						{% endfor %}
 					</ul>
-					<a href="{{ path('app_home') }}" class="btn-create-group">Créer un groupe</a>
+					<a href="{{ path('app_group_new') }}" class="btn-create-group">Créer un groupe</a>
 				</aside>
 
-				<main class="main-content"> {% block body %}{% endblock %}
-					</main>
+				<main class="main-content">
+				{% else %}
+					<main class="main-content-no-sidebar">
+					{% endif %}
+					{% block body %}{% endblock %}
+				</main>
+				{% if app.user %}
 				</div>
 			{% endif %}
 		</body>
-	</html>
+	</body>
+</html>
