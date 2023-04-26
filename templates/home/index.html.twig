@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - CircleSync
+{% endblock %}
+
+{% block body %}
+	<section class="banner">
+		<h1>Rejoignez CircleSync et découvrez des groupes qui partagent vos centres d'intérêt !</h1>
+	</section>
+
+	<section class="create-group">
+		<h2>Créer un groupe</h2>
+		<p>Créez votre propre groupe et invitez d'autres personnes à le rejoindre.</p>
+	</section>
+
+	<section class="group-list">
+		<h2>Groupes disponibles</h2>
+		<div class="groups">
+			{% for group in groups %}
+				<div class="group">
+					<h3 class="group-title">{{ group.name }}</h3>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+{% endblock %}

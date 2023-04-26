@@ -1,0 +1,194 @@
+// Variables
+$primary-color: #1e90ff;
+$secondary-color: #4a8fd8;
+$dark-color: #1c1c1c;
+$light-color: #ffffff;
+$font-family: 'Arial', sans-serif;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Base
+body {
+  font-family: $font-family;
+  background-color: $light-color;
+  color: $dark-color;
+}
+
+// Header
+header {
+  background-color: $primary-color;
+  padding: 10px;
+
+  .navbar {
+    @include flex-center;
+    justify-content: space-between;
+  }
+
+  h2 {
+    color: $light-color;
+  }
+
+  .nav-item {
+    list-style: none;
+    display: inline-block;
+  }
+
+  .nav-link {
+    color: $light-color;
+    text-decoration: none;
+    padding: 10px;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+// Homepage
+.banner {
+  background-color: $secondary-color;
+  padding: 50px;
+  text-align: center;
+
+  h1 {
+    color: $light-color;
+  }
+}
+
+.create-group {
+  text-align: center;
+  padding: 50px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .btn-create-group {
+    background-color: $primary-color;
+    color: $light-color;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+.group-list {
+  padding: 50px;
+
+  h2 {
+    margin-bottom: 30px;
+  }
+
+  .groups {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .group {
+    background-color: $secondary-color;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    margin: 10px;
+
+    h3 {
+      color: $light-color;
+      text-align: center;
+    }
+  }
+}
+
+.page-container {
+  display: flex;
+  min-height: calc(100vh - 62px); // Ajustez cette valeur en fonction de la hauteur de votre en-tête
+}
+
+.sidebar {
+  background-color: #f0f0f0;
+  width: 250px;
+  min-height: 100%;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+
+  .btn-create-group {
+    display: inline-block;
+    background-color: $primary-color;
+    color: $light-color;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+  
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 5px;
+    padding-left: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-item {
+  margin-left: 10px;
+}
+
+.btn-create-group {
+  display: inline-block;
+  background-color: $primary-color;
+  color: $light-color;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $secondary-color;
+  }
+}
