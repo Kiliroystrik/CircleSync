@@ -30,6 +30,18 @@ header .nav-link {
 header .nav-link:hover {
   background-color: #4a8fd8;
 }
+header .profile {
+  display: flex;
+  align-items: center;
+}
+header .profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-left: 10px;
+}
 
 .banner {
   background-color: #4a8fd8;

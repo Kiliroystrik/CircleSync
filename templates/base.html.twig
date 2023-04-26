@@ -38,14 +38,14 @@
 					{% endif %}
 				</ul>
 				{% if app.user %}
-					<h3>Bienvenu
-						{{ app.user.lastname }}</h3>
-					{# <div class="avatar_profile">
-										                    {% if app.user.image.url %}
-										                    {% else %}
-										                        <img src="{{ asset('assets/css/style.css')}}" alt="Profile">
-										                    {% endif %}
-										                </div> #}
+					<div class="profile">
+						<h3>Bienvenu
+							{{ app.user.lastname }}</h3>
+						{% if app.user.image %}
+							{% else %}
+								<img class="profile-image" src="{{ asset('assets/images/avatar/userProfile.jpg')}}" alt="Profile">
+						{% endif %}
+					</div>
 				{% endif %}
 			</nav>
 		</header>
