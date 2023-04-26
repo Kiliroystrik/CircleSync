@@ -1,26 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Group{% endblock %}
+{% block title %}Group
+{% endblock %}
 
 {% block body %}
-    <h1>Group</h1>
+	<h1>Group</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ group.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ group.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ group.id }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ group.name }}</td>
+			</tr>
+			<tr>
+				<th>Group Users</th>
+				<td>
+					<ul>
+						{% for user in group.users %}
+							<li>
+								{{ user.email }}
+							</li>
+						{% endfor %}
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_group_index') }}">back to list</a>
+	<a href="{{ path('app_group_index') }}">back to list</a>
 
-    <a href="{{ path('app_group_edit', {'id': group.id}) }}">edit</a>
+	<a href="{{ path('app_group_edit', {'id': group.id}) }}">edit</a>
 
-    {{ include('group/_delete_form.html.twig') }}
+	{{ include('group/_delete_form.html.twig') }}
+
+	<div class="posts">
+		<h2>Les posts</h2>
+		<ul>
+			{% for post in group.posts %}
+				<li class="post">
+					<div class="post-header">
+						<h3 class="post-author">{{ post.user.lastname }}
+							{{ post.user.firstname }}</h3>
+						<p class="post-date">{{ post.publicationDate|date('d/m/Y') }}</p>
+					</div>
+					<div class="post-content">
+						<p>{{ post.content }}</p>
+						<p class="post-likes">{{ post.nbrLikes }}
+							Likes</p>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% include 'post/new.html.twig' with {'groupId': group.id} %}
+
 {% endblock %}

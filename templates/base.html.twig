@@ -57,7 +57,7 @@
 					<ul>
 						{% for group in app.user.groupes %}
 							<li>
-								<a href="{{ path('app_home', {'id': group.id}) }}">{{ group.name }}</a>
+								<a href="{{ path('app_group_show', {'id': group.id}) }}">{{ group.name }}</a>
 							</li>
 						{% endfor %}
 					</ul>

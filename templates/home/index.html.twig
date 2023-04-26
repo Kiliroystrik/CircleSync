@@ -9,8 +9,8 @@
 	</section>
 
 	<section class="create-group">
-		<h2>Créer un groupe</h2>
-		<p>Créez votre propre groupe et invitez d'autres personnes à le rejoindre.</p>
+		<h2>Choisissez un groupe</h2>
+		<p>Rejoignez un groupe parmis ceux disponibles et rejoignez le cercle de vos collègues.</p>
 	</section>
 
 	<section class="group-list">
@@ -18,9 +18,18 @@
 		<div class="groups">
 			{% for group in groups %}
 				<div class="group">
-					<h3 class="group-title">{{ group.name }}</h3>
+					<h3 class="group-title">
+						<a href="{{ path('app_group_show', {'id': group.id}) }}">{{ group.name }}</a>
+					</h3>
+					<ul class="group-members">
+						{% for user in group.users %}
+							<li class="group-member">{{ user.lastname }}
+								{{ user.firstname }}</li>
+						{% endfor %}
+					</ul>
 				</div>
 			{% endfor %}
 		</div>
 	</section>
+
 {% endblock %}

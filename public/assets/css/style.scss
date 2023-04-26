@@ -1,12 +1,12 @@
 // Reset CSS
-@import url('https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
 
 // Variables
 $primary-color: #1e90ff;
 $secondary-color: #4a8fd8;
 $dark-color: #1c1c1c;
 $light-color: #ffffff;
-$font-family: 'Arial', sans-serif;
+$font-family: "Arial", sans-serif;
 
 // Mixins
 @mixin flex-center {
@@ -146,7 +146,7 @@ header {
     text-align: center;
     font-weight: bold;
     text-decoration: none;
-  
+
     &:hover {
       background-color: $secondary-color;
     }
@@ -177,7 +177,6 @@ header {
   }
 }
 
-
 .main-content {
   flex: 1;
   padding: 20px;
@@ -206,5 +205,48 @@ header {
 
   &:hover {
     background-color: $secondary-color;
+  }
+}
+
+.posts {
+  .post {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    css Copy code .post-header {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .post-author {
+        margin: 0;
+        font-weight: bold;
+      }
+
+      .post-date {
+        margin: 0;
+        font-size: 14px;
+        color: #999;
+      }
+    }
+
+    .post-content {
+      padding: 10px;
+
+      p {
+        margin: 0;
+      }
+
+      .post-likes {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #999;
+      }
+    }
   }
 }

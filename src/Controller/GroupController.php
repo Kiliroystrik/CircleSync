@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\Post;
 use App\Form\GroupType;
+use App\Form\PostType;
 use App\Repository\GroupRepository;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,11 +43,31 @@ class GroupController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_group_show', methods: ['GET'])]
-    public function show(Group $group): Response
+    #[Route('/{id}', name: 'app_group_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, Group $group, PostRepository $postRepository): Response
     {
+        $user = $this->getUser();
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+        $post->setUser($user);
+        $referer = $request->headers->get('referer');
+
+        if (!$group) {
+            throw $this->createNotFoundException('The group does not exist');
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post->setGroupe($group);
+            $postRepository->save($post, true);
+
+            return $this->redirect($referer);
+        }
+
         return $this->render('group/show.html.twig', [
             'group' => $group,
+            'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -69,7 +92,7 @@ class GroupController extends AbstractController
     #[Route('/{id}', name: 'app_group_delete', methods: ['POST'])]
     public function delete(Request $request, Group $group, GroupRepository $groupRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$group->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $group->getId(), $request->request->get('_token'))) {
             $groupRepository->remove($group, true);
         }
 

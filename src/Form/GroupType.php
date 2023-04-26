@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Group;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -16,9 +17,11 @@ class GroupType extends AbstractType
         $builder
             ->add('name')
             ->add('users', EntityType::class, [
-                'class' => 'App\Entity\User',
+                'class' => User::class,
                 'choice_label' => 'email',
-                'multiple' => true
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false, // ajout de cette option pour éviter un bug dans la gestion des relations ManyToMany
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save'

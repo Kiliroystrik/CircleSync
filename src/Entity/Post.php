@@ -47,6 +47,7 @@ class Post
         $this->commentaries = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->publicationDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
