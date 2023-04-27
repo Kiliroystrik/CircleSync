@@ -65,6 +65,7 @@ class GroupController extends AbstractController
 
             return $this->redirect($referer);
         }
+
         $posts = $group->getPosts();
         foreach ($posts as $post) {
             $postRepository->updatePostLikes($post);

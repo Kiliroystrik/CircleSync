@@ -10,7 +10,6 @@
 			<p class="post-likes text-gray-500">{{ post.nbrLikes }}
 				Likes</p>
 
-
 			{% set liked = false %}
 			{% for like in post.likes %}
 				{% if like.user.id == app.user.id %}
@@ -23,15 +22,18 @@
 				<a href="{{ path('app_like_add_post', {'idPost': post.id}) }}" class="text-blue-600 hover:text-blue-500">Like</a>
 			{% endif %}
 
-
-			{# {% for like in post.likes %}
-							{% if like.user.id == app.user.id %}
-								<a href="{{ path('app_like_remove_post', {'idPost': post.id}) }}" class="text-red-600 hover:text-red-500">Remove Like</a>
-							{% else %}
-								<a href="{{ path('app_like_add_post', {'idPost': post.id}) }}" class="text-blue-600 hover:text-blue-500">Like</a>
-							{% endif %}
-						{% endfor %} #}
-
+			<div class="post-commentaries mt-4">
+				{% for commentary in post.commentaries %}
+					<div class="post-commentary bg-gray-100 p-4 rounded mb-2">
+						<h3 class="post-commentary-author text-lg font-semibold">{{ commentary.user.lastname }}
+							{{ commentary.user.firstname }}</h3>
+						<p class="post-commentary-content">{{ commentary.content }}</p>
+					</div>
+					{% if loop.last == false %}
+						<hr class="my-2">
+					{% endif %}
+				{% endfor %}
+			</div>
 		</div>
 	</li>
 {% endblock %}
