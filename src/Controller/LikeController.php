@@ -40,6 +40,9 @@ class LikeController extends AbstractController
 
         $likeRepository->save($like, true);
 
+        $post = $postRepository->find($idPost);
+        $postRepository->updatePostLikes($post);
+
         // redirect to referer
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
@@ -54,13 +57,17 @@ class LikeController extends AbstractController
     // }
 
 
-    #[Route('/removePostLike/{idPost}', name: 'app_like_remove_post', methods: ['POST'])]
-    public function delete(Request $request, LikeRepository $likeRepository, $idPost): Response
+    #[Route('/removePostLike/{idPost}', name: 'app_like_remove_post', methods: ['GET', 'POST'])]
+    public function delete(Request $request, LikeRepository $likeRepository, $idPost, PostRepository $postRepository): Response
     {
         // if this like exists, delete it
         $like = $likeRepository->findOneBy(['post' => $idPost, 'user' => $this->getUser()]);
         if ($like) {
             $likeRepository->remove($like, true);
+
+            $post = $postRepository->find($idPost);
+            $postRepository->updatePostLikes($post);
+
             $referer = $request->headers->get('referer');
             return $this->redirect($referer);
         }

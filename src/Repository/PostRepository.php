@@ -39,6 +39,13 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Updates the number of likes of a given Post entity in the database.
+     *
+     * @param Post $post The Post entity to update.
+     *
+     * @return void
+     */
     public function updatePostLikes(Post $post)
     {
         $qb = $this->createQueryBuilder('p')

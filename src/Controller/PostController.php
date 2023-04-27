@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\GroupRepository;
+use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,14 +54,25 @@ class PostController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post, PostRepository $postRepository): Response
+    public function show(Post $post, PostRepository $postRepository, LikeRepository $likeRepository): Response
     {
         $likes = $post->getLikes()->toArray();
         $post->setNbrLikes(count($likes));
         $postRepository->update($post);
 
+        // set alreadyLiked to true if the user has already liked the post and false otherwise to di it search if post.likes where user.id and post.id match the user.id and post.id
+        $user = $this->getUser();
+        // $alreadyLiked = false;
+        // if ($user) {
+        //     $like = $likeRepository->findOneBy(['post' => $post, 'user' => $user]);
+        //     if ($like) {
+        //         $alreadyLiked = true;
+        //     }
+        // }
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            // 'alreadyLiked' => $alreadyLiked,
         ]);
     }
 

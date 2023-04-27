@@ -7,6 +7,7 @@ use App\Entity\Post;
 use App\Form\GroupType;
 use App\Form\PostType;
 use App\Repository\GroupRepository;
+use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +46,7 @@ class GroupController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_group_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Group $group, PostRepository $postRepository, EntityManagerInterface $entityManager): Response
+    public function show(Request $request, Group $group, PostRepository $postRepository, LikeRepository $likeRepository): Response
     {
         $user = $this->getUser();
         $post = new Post();
@@ -68,6 +69,7 @@ class GroupController extends AbstractController
         foreach ($posts as $post) {
             $postRepository->updatePostLikes($post);
         }
+
 
         return $this->render('group/show.html.twig', [
             'group' => $group,
