@@ -24,9 +24,7 @@
 						<li class="mr-4">
 							<a href="{{ path('app_home') }}" class="text-gray-700 hover:text-blue-600">Accueil</a>
 						</li>
-						<li>
-							<a href="{{ path('app_logout') }}" class="text-gray-700 hover:text-blue-600">Se déconnecter</a>
-						</li>
+
 					{% else %}
 						<li class="mr-4">
 							<a href="{{ path('app_login') }}" class="text-gray-700 hover:text-blue-600">Se connecter</a>
@@ -40,11 +38,25 @@
 					<div class="ml-6 flex items-center">
 						<h3 class="mr-4 text-gray-700">Bienvenu
 							{{ app.user.lastname }}</h3>
-						{% if app.user.image %}
-							{% else %}
-								<img class="w-10 h-10 rounded-full" src="{{ asset('assets/images/avatar/userProfile.jpg')}}" alt="Profile">
-						{% endif %}
+						<div class="relative inline-block text-left">
+							<button type="button" class="inline-flex justify-center items-center">
+								{% if app.user.image %}
+									<!-- Remplacez cette ligne par le code pour afficher l'image de l'utilisateur -->
+								{% else %}
+									<img class="w-10 h-10 rounded-full hover:border-2 hover:border-blue-600 hover:shadow-md" src="{{ asset('assets/images/avatar/userProfile.jpg') }}" alt="Profile">
+								{% endif %}
+
+							</button>
+							<div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+								<div
+									class="py-1" role="none">
+									<!-- Ici, vous pouvez ajouter d'autres éléments de menu si nécessaire -->
+									<a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Déconnexion</a>
+								</div>
+							</div>
+						</div>
 					</div>
+
 				{% endif %}
 			</nav>
 		</header>
@@ -52,7 +64,7 @@
 		{% if app.user %}
 			<div class="container mx-auto px-4 py-8 flex">
 				<aside class="w-1/4 mr-8">
-					<h3 class="text-xl font-semibold text-gray-700 mb-4">Mes groupes</h3>
+					<h3 class="text-xl font-semibold text-gray-700 mb-4">Mes Groupes</h3>
 					<ul class="space-y-2">
 						{% for group in app.user.groupes %}
 							<li>
@@ -61,6 +73,10 @@
 						{% endfor %}
 					</ul>
 					<a href="{{ path('app_group_new') }}" class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500">Créer un groupe</a>
+
+					<h3 class="text-xl font-semibold text-gray-700 mb-4">
+						<a href="{{ path('app_post_index') }}" class="text-gray-600 hover:text-blue-600">Mes Posts</a>
+					</h3>
 				</aside>
 
 				<main class="w-3/4">
@@ -75,3 +91,29 @@
 		</body>
 	</body>
 </html>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const avatarButton = document.querySelector('.inline-flex');
+const dropdownMenu = document.querySelector('.origin-top-right');
+
+// Cache le menu déroulant par défaut
+dropdownMenu.style.display = 'none';
+
+// Gère le clic sur le bouton d'avatar
+avatarButton.addEventListener('click', function () {
+if (dropdownMenu.style.display === 'none') {
+dropdownMenu.style.display = 'block';
+} else {
+dropdownMenu.style.display = 'none';
+}
+});
+
+// Ferme le menu déroulant lorsque vous cliquez en dehors de celui-ci
+document.addEventListener('click', function (event) {
+if (! avatarButton.contains(event.target) && ! dropdownMenu.contains(event.target)) {
+dropdownMenu.style.display = 'none';
+}
+});
+});
+</script>

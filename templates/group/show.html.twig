@@ -1,60 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Group{% endblock %}
+{% block title %}Group
+{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto px-4 py-16">
-        <h1 class="text-3xl font-semibold mb-6">Group</h1>
+	<div class="container mx-auto px-4 py-16">
+		<h1 class="text-3xl font-semibold mb-6">Group</h1>
 
-        <table class="table-auto border-collapse border border-gray-300 w-full mb-6">
-            <tbody>
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Id</th>
-                    <td class="border border-gray-300 px-4 py-2">{{ group.id }}</td>
-                </tr>
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
-                    <td class="border border-gray-300 px-4 py-2">{{ group.name }}</td>
-                </tr>
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Group Users</th>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <ul class="list-disc list-inside">
-                            {% for user in group.users %}
-                                <li>
-                                    {{ user.email }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+		<table class="table-auto border-collapse border border-gray-300 w-full mb-6">
+			<tbody>
+				<tr>
+					<th class="border border-gray-300 px-4 py-2 text-left">Id</th>
+					<td class="border border-gray-300 px-4 py-2">{{ group.id }}</td>
+				</tr>
+				<tr>
+					<th class="border border-gray-300 px-4 py-2 text-left">Name</th>
+					<td class="border border-gray-300 px-4 py-2">{{ group.name }}</td>
+				</tr>
+				<tr>
+					<th class="border border-gray-300 px-4 py-2 text-left">Group Users</th>
+					<td class="border border-gray-300 px-4 py-2">
+						<ul class="list-disc list-inside">
+							{% for user in group.users %}
+								<li>
+									{{ user.email }}
+								</li>
+							{% endfor %}
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-        <div class="flex space-x-4 mb-6">
-            <a href="{{ path('app_group_index') }}" class="text-blue-600 hover:text-blue-500">Back to list</a>
-            <a href="{{ path('app_group_edit', {'id': group.id}) }}" class="text-blue-600 hover:text-blue-500">Edit</a>
-        </div>
+		<div class="flex space-x-4 mb-6">
+			<a href="{{ path('app_group_index') }}" class="text-blue-600 hover:text-blue-500">Back to list</a>
+			<a href="{{ path('app_group_edit', {'id': group.id}) }}" class="text-blue-600 hover:text-blue-500">Edit</a>
+		</div>
 
-        {{ include('group/_delete_form.html.twig') }}
+		{{ include('group/_delete_form.html.twig') }}
 
-        <div class="posts">
-            <h2 class="text-2xl font-semibold mb-4">Les posts</h2>
-            <ul class="space-y-4">
-                {% for post in group.posts %}
-                    <li class="post bg-white shadow rounded p-6">
-                        <div class="post-header flex items-center justify-between mb-4">
-                            <h3 class="post-author text-xl font-semibold">{{ post.user.lastname }} {{ post.user.firstname }}</h3>
-                            <p class="post-date text-gray-500">{{ post.publicationDate|date('d/m/Y') }}</p>
-                        </div>
-                        <div class="post-content">
-                            <p class="mb-4">{{ post.content }}</p>
-                            <p class="post-likes text-gray-500">{{ post.nbrLikes }} Likes</p>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% include 'post/new.html.twig' with {'groupId': group.id} %}
-    </div>
+		<div class="posts">
+			<h2 class="text-2xl font-semibold mb-4">Les posts</h2>
+			<ul class="space-y-4">
+				{% for post in group.posts %}
+					{% include 'post/show.html.twig' with {'post': post} %}
+				{% endfor %}
+			</ul>
+		</div>
+		{% include 'post/new.html.twig' with {'groupId': group.id} %}
+	</div>
 {% endblock %}

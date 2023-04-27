@@ -18,7 +18,7 @@ class Like
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Commentary $commentary = null;
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
@@ -26,7 +26,7 @@ class Like
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Post $post = null;
 
     public function getId(): ?int

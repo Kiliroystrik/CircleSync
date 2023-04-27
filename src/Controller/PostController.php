@@ -53,8 +53,12 @@ class PostController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_post_show', methods: ['GET'])]
-    public function show(Post $post): Response
+    public function show(Post $post, PostRepository $postRepository): Response
     {
+        $likes = $post->getLikes()->toArray();
+        $post->setNbrLikes(count($likes));
+        $postRepository->update($post);
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
