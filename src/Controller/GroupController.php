@@ -8,6 +8,7 @@ use App\Form\GroupType;
 use App\Form\PostType;
 use App\Repository\GroupRepository;
 use App\Repository\PostRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ class GroupController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_group_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Group $group, PostRepository $postRepository): Response
+    public function show(Request $request, Group $group, PostRepository $postRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $post = new Post();
@@ -62,6 +63,10 @@ class GroupController extends AbstractController
             $postRepository->save($post, true);
 
             return $this->redirect($referer);
+        }
+        $posts = $group->getPosts();
+        foreach ($posts as $post) {
+            $postRepository->updatePostLikes($post);
         }
 
         return $this->render('group/show.html.twig', [
@@ -89,7 +94,7 @@ class GroupController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_group_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_group_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Group $group, GroupRepository $groupRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $group->getId(), $request->request->get('_token'))) {

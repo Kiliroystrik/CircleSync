@@ -39,7 +39,18 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
+    public function updatePostLikes(Post $post)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->update(Post::class, 'p')
+            ->set('p.nbrLikes', '(SELECT COUNT(l.id) FROM App\Entity\Like l WHERE l.post = :post)')
+            ->setParameter('post', $post)
+            ->where('p = :post')
+            ->setParameter('post', $post)
+            ->getQuery();
 
+        $qb->execute();
+    }
 
     //    /**
     //     * @return Post[] Returns an array of Post objects
