@@ -9,7 +9,8 @@ use App\Form\PostType;
 use App\Repository\GroupRepository;
 use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
+use App\Services\GroupManagerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,5 +106,20 @@ class GroupController extends AbstractController
         }
 
         return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/join_group/{groupId}', name: 'app_join_group')]
+    public function joinGroup(int $groupId, GroupManagerService $groupManagerService, UserRepository $userRepository): Response
+    {
+        // Récupérez l'utilisateur connecté
+        /** @var User $user */
+        $user = $this->getUser();
+        $user = $userRepository->find($user);
+
+        // Utilisez le service GroupManagerService pour ajouter l'utilisateur au groupe
+        $groupManagerService->joinGroup($groupId, $user);
+
+        //redirect to app_group_show page
+        return $this->redirectToRoute('app_group_show', ['id' => $groupId], Response::HTTP_SEE_OTHER);
     }
 }

@@ -66,19 +66,19 @@ class LikeManagerService
         $this->entityManager->remove($like);
         $this->entityManager->flush();
 
-        $this->refreshLikes($type, $targetId, $this->postRepository, $this->commentaryRepository);
+        $this->refreshLikes($type, $targetId);
 
         return true;
     }
 
-    public function refreshLikes(string $type, int $targetId, PostRepository $postRepository, CommentaryRepository $commentaryRepository): void
+    public function refreshLikes(string $type, int $targetId): void
     {
         if ($type == 'post') {
-            $post = $postRepository->find($targetId);
-            $postRepository->updatePostLikes($post);
+            $post = $this->postRepository->find($targetId);
+            $this->postRepository->updatePostLikes($post);
         } elseif ($type == 'commentary') {
-            $commentary = $commentaryRepository->find($targetId);
-            $commentaryRepository->updatePostLikes($commentary);
+            $commentary = $this->commentaryRepository->find($targetId);
+            $this->commentaryRepository->updatePostLikes($commentary);
         } else {
             throw new Exception("Error Processing Request", 1);
         }
