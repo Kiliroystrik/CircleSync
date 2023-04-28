@@ -1,39 +1,52 @@
+
+
 {% block body %}
-	<li class="post bg-white shadow rounded p-6">
-		<div class="post-header flex items-center justify-between mb-4">
-			<h3 class="post-author text-xl font-semibold">{{ post.user.lastname }}
-				{{ post.user.firstname }}</h3>
-			<p class="post-date text-gray-500">{{ post.publicationDate|date('d/m/Y') }}</p>
-		</div>
-		<div class="post-content">
-			<p class="mb-4">{{ post.content }}</p>
-			<p class="post-likes text-gray-500">{{ post.nbrLikes }}
-				Likes</p>
+    <li class="post bg-white shadow rounded p-6">
+        <div class="post-header flex items-center justify-between mb-4">
+            <h3 class="post-author text-xl font-semibold">{{ post.user.lastname }}
+                {{ post.user.firstname }}</h3>
+            <p class="post-date text-gray-500">{{ post.publicationDate|date('d/m/Y') }}</p>
+        </div>
+        <div class="post-content">
+            <p class="mb-4">{{ post.content }}</p>
+            <p class="post-likes text-gray-500">{{ post.nbrLikes }}
+                Likes</p>
 
-			{% set liked = false %}
-			{% for like in post.likes %}
-				{% if like.user.id == app.user.id %}
-					{% set liked = true %}
-				{% endif %}
-			{% endfor %}
-			{% if liked %}
-				<a href="{{ path('app_like_remove_post', {'idPost': post.id}) }}" class="text-red-600 hover:text-red-500">Remove Like</a>
-			{% else %}
-				<a href="{{ path('app_like_add_post', {'idPost': post.id}) }}" class="text-blue-600 hover:text-blue-500">Like</a>
-			{% endif %}
+            {% set liked = false %}
+            {% for like in post.likes %}
+                {% if like.user.id == app.user.id %}
+                    {% set liked = true %}
+                {% endif %}
+            {% endfor %}
+            {% if liked %}
+                <a href="{{ path('app_like_remove_post', {'idPost': post.id}) }}" class="text-red-600 hover:text-red-500">Remove Like</a>
+            {% else %}
+                <a href="{{ path('app_like_add_post', {'idPost': post.id}) }}" class="text-blue-600 hover:text-blue-500">Like</a>
+            {% endif %}
 
-			<div class="post-commentaries mt-4">
-				{% for commentary in post.commentaries %}
-					<div class="post-commentary bg-gray-100 p-4 rounded mb-2">
-						<h3 class="post-commentary-author text-lg font-semibold">{{ commentary.user.lastname }}
-							{{ commentary.user.firstname }}</h3>
-						<p class="post-commentary-content">{{ commentary.content }}</p>
-					</div>
-					{% if loop.last == false %}
-						<hr class="my-2">
-					{% endif %}
-				{% endfor %}
-			</div>
-		</div>
-	</li>
+            <div class="post-commentaries mt-4">
+                {% for commentary in post.commentaries %}
+                    <div class="post-commentary bg-gray-100 p-4 rounded mb-2">
+                        <h3 class="post-commentary-author text-lg font-semibold">{{ commentary.user.lastname }}
+                            {{ commentary.user.firstname }}</h3>
+                        <p class="post-commentary-content">{{ commentary.content }}</p>
+                    </div>
+                    {% if loop.last == false %}
+                        <hr class="my-2">
+                    {% endif %}
+                {% endfor %}
+
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {# création du formulaire de commentaire #}
+                    <div class="commentary-form">
+                        {{ form_start(formCommentary) }}
+                        {{ form_widget(formCommentary.content, {'attr': {'class': 'form-control', 'placeholder': 'Votre commentaire'}}) }}
+                        {{ form_widget(formCommentary.post) }}
+                        <button type="submit" class="btn btn-primary mt-2">Commenter</button>
+                        {{ form_end(formCommentary) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </li>
 {% endblock %}
