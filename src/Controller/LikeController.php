@@ -2,11 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Like;
-use App\Form\LikeType;
-use App\Repository\CommentaryRepository;
-use App\Repository\LikeRepository;
-use App\Repository\PostRepository;
+use App\Services\LikeManagerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,105 +11,62 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/like')]
 class LikeController extends AbstractController
 {
-    // #[Route('/', name: 'app_like_index', methods: ['GET'])]
-    // public function index(LikeRepository $likeRepository): Response
-    // {
-    //     return $this->render('like/index.html.twig', [
-    //         'likes' => $likeRepository->findAll(),
-    //     ]);
-    // }
+
 
     #[Route('/addLike/post/{idPost}', name: 'app_like_add_post', methods: ['GET', 'POST'])]
-    public function addPostLike(Request $request, LikeRepository $likeRepository, $idPost, PostRepository $postRepository): Response
+    public function addPostLike(Request $request, $idPost, LikeManagerService $likeManagerService): Response
     {
-        // search if this like already exists
-        $like = $likeRepository->findOneBy(['post' => $idPost, 'user' => $this->getUser()]);
-        if ($like) {
-            return $this->redirectToRoute('app_like_remove_post', ['idPost' => $idPost], Response::HTTP_SEE_OTHER);
+        if ($likeManagerService->addLike('post', $idPost, $this->getUser())) {
+
+            // redirect to referer
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        } else {
+            throw new Exception("Error Processing Request", 1);
         }
-        $user = $this->getUser();
-        $like = new Like();
-        // get post by id
-        $post = $postRepository->find($idPost);
-        $like->setPost($post);
-        $like->setUser($user);
-        $like->setType("Post");
-
-        $likeRepository->save($like, true);
-
-        $post = $postRepository->find($idPost);
-        $postRepository->updatePostLikes($post);
-
-        // redirect to referer
-        $referer = $request->headers->get('referer');
-        return $this->redirect($referer);
     }
 
 
 
     #[Route('/removeLike/post/{idPost}', name: 'app_like_remove_post', methods: ['GET', 'POST'])]
-    public function removePostLike(Request $request, LikeRepository $likeRepository, $idPost, PostRepository $postRepository): Response
+    public function removePostLike(Request $request, $idPost, LikeManagerService $likeManagerService): Response
     {
-        // if this like exists, delete it
-        $like = $likeRepository->findOneBy(['post' => $idPost, 'user' => $this->getUser()]);
-        if ($like) {
-            $likeRepository->remove($like, true);
 
-            $post = $postRepository->find($idPost);
-            $postRepository->updatePostLikes($post);
+
+        if ($likeManagerService->removeLike('post', $idPost, $this->getUser())) {
 
             $referer = $request->headers->get('referer');
             return $this->redirect($referer);
+        } else {
+            throw new Exception("Error Processing Request", 1);
         }
-        // else redirect to function newPostLike
-        return $this->redirectToRoute('app_like_add_post', ['idPost' => $idPost], Response::HTTP_SEE_OTHER);
     }
 
 
 
     #[Route('/addLike/commentary/{idCommentary}', name: 'app_like_add_commentary', methods: ['GET', 'POST'])]
-    public function addCommentary(Request $request, LikeRepository $likeRepository, $idCommentary, CommentaryRepository $commentaryRepository): Response
+    public function addCommentary(Request $request, $idCommentary, LikeManagerService $likeManagerService): Response
     {
-        // search if this like already exists
-        $like = $likeRepository->findOneBy(['commentary' => $idCommentary, 'user' => $this->getUser()]);
-        if ($like) {
-            return $this->redirectToRoute('app_like_remove_commentary', ['idCommentary' => $idCommentary], Response::HTTP_SEE_OTHER);
+        if ($likeManagerService->removeLike('commentary', $idCommentary, $this->getUser())) {
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        } else {
+            throw new Exception("Error Processing Request", 1);
         }
-        $user = $this->getUser();
-        $like = new Like();
-        // get post by id
-        $post = $commentaryRepository->find($idCommentary);
-        $like->setPost($post);
-        $like->setUser($user);
-        $like->setType("Post");
-
-        $likeRepository->save($like, true);
-
-        $commentary = $commentaryRepository->find($idCommentary);
-        $commentaryRepository->updateCommentaryLikes($post);
-
-        // redirect to referer
-        $referer = $request->headers->get('referer');
-        return $this->redirect($referer);
     }
 
 
 
     #[Route('/removeLike/commentary/{idCommentary}', name: 'app_like_remove_commentary', methods: ['GET', 'POST'])]
-    public function removeCommentary(Request $request, LikeRepository $likeRepository, $idCommentary, CommentaryRepository $commentaryRepository): Response
+    public function removeCommentary(Request $request, $idCommentary, LikeManagerService $likeManagerService): Response
     {
-        // if this like exists, delete it
-        $like = $likeRepository->findOneBy(['commentary' => $idCommentary, 'user' => $this->getUser()]);
-        if ($like) {
-            $likeRepository->remove($like, true);
-
-            $post = $commentaryRepository->find($idCommentary);
-            $commentaryRepository->updateCommentaryLikes($post);
+        if ($likeManagerService->removeLike('commentary', $idCommentary, $this->getUser())) {
 
             $referer = $request->headers->get('referer');
             return $this->redirect($referer);
+        } else {
+            throw new Exception("Error Processing Request", 1);
         }
-        // else redirect to function newPostLike
-        return $this->redirectToRoute('app_like_new_commentary', ['idCommentary' => $idCommentary], Response::HTTP_SEE_OTHER);
     }
 }
