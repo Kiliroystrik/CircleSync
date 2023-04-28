@@ -28,6 +28,19 @@
 						<h3 class="post-commentary-author text-lg font-semibold">{{ commentary.user.lastname }}
 							{{ commentary.user.firstname }}</h3>
 						<p class="post-commentary-content">{{ commentary.content }}</p>
+						<p class="post-likes text-gray-500">{{ commentary.nbrLikes }}
+							Likes</p>
+						{% set likedCommentary = false %}
+						{% for like in commentary.likes %}
+							{% if like.user.id == app.user.id %}
+								{% set likedCommentary = true %}
+							{% endif %}
+						{% endfor %}
+						{% if likedCommentary %}
+							<a href="{{ path('app_like_remove_commentary', {'idCommentary': commentary.id}) }}" class="text-red-600 hover:text-red-500">Remove Like</a>
+						{% else %}
+							<a href="{{ path('app_like_add_commentary', {'idCommentary': commentary.id}) }}" class="text-blue-600 hover:text-blue-500">Like</a>
+						{% endif %}
 					</div>
 					{% if loop.last == false %}
 						<hr class="my-2">

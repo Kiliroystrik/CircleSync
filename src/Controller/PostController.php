@@ -62,13 +62,7 @@ class PostController extends AbstractController
 
         // set alreadyLiked to true if the user has already liked the post and false otherwise to di it search if post.likes where user.id and post.id match the user.id and post.id
         $user = $this->getUser();
-        // $alreadyLiked = false;
-        // if ($user) {
-        //     $like = $likeRepository->findOneBy(['post' => $post, 'user' => $user]);
-        //     if ($like) {
-        //         $alreadyLiked = true;
-        //     }
-        // }
+
 
         return $this->render('post/show.html.twig', [
             'post' => $post,

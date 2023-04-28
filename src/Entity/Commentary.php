@@ -29,6 +29,9 @@ class Commentary
     #[ORM\OneToMany(mappedBy: 'commentary', targetEntity: Like::class, orphanRemoval: true)]
     private Collection $likes;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $nbrLikes = null;
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -101,6 +104,18 @@ class Commentary
                 $like->setCommentary(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbrLikes(): ?int
+    {
+        return $this->nbrLikes;
+    }
+
+    public function setNbrLikes(?int $nbrLikes): self
+    {
+        $this->nbrLikes = $nbrLikes;
 
         return $this;
     }

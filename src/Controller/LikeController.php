@@ -47,7 +47,7 @@ class LikeController extends AbstractController
     #[Route('/addLike/commentary/{idCommentary}', name: 'app_like_add_commentary', methods: ['GET', 'POST'])]
     public function addCommentary(Request $request, $idCommentary, LikeManagerService $likeManagerService): Response
     {
-        if ($likeManagerService->removeLike('commentary', $idCommentary, $this->getUser())) {
+        if ($likeManagerService->addLike('commentary', $idCommentary, $this->getUser())) {
 
             $referer = $request->headers->get('referer');
             return $this->redirect($referer);

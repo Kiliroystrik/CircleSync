@@ -78,7 +78,7 @@ class LikeManagerService
             $this->postRepository->updatePostLikes($post);
         } elseif ($type == 'commentary') {
             $commentary = $this->commentaryRepository->find($targetId);
-            $this->commentaryRepository->updatePostLikes($commentary);
+            $this->commentaryRepository->updateCommentaryLikes($commentary);
         } else {
             throw new Exception("Error Processing Request", 1);
         }

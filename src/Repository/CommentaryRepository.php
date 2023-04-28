@@ -39,28 +39,40 @@ class CommentaryRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Commentary[] Returns an array of Commentary objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function updateCommentaryLikes(Commentary $commentary)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->update(Commentary::class, 'p')
+            ->set('p.nbrLikes', '(SELECT COUNT(l.id) FROM App\Entity\Like l WHERE l.commentary = :commentary)')
+            ->setParameter('commentary', $commentary)
+            ->where('p = :commentary')
+            ->setParameter('commentary', $commentary)
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Commentary
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb->execute();
+    }
+    //    /**
+    //     * @return Commentary[] Returns an array of Commentary objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Commentary
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
