@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Repository\CommentaryRepository;
 use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LikeManagerService
@@ -15,20 +14,17 @@ class LikeManagerService
     private $likeRepository;
     private $postRepository;
     private $commentaryRepository;
-    private $userRepository;
     private $entityManager;
 
     public function __construct(
         LikeRepository $likeRepository,
         PostRepository $postRepository,
         CommentaryRepository $commentaryRepository,
-        UserRepository $userRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->likeRepository = $likeRepository;
         $this->postRepository = $postRepository;
         $this->commentaryRepository = $commentaryRepository;
-        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
 
