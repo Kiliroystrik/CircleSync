@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentary;
 use App\Entity\Group;
 use App\Entity\Post;
+use App\Form\CommentaryType;
 use App\Form\GroupType;
 use App\Form\PostType;
 use App\Repository\GroupRepository;
@@ -47,38 +49,48 @@ class GroupController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_group_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Group $group, PostRepository $postRepository, LikeRepository $likeRepository): Response
-    {
-        $user = $this->getUser();
-        $post = new Post();
-        $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
-        $post->setUser($user);
-        $referer = $request->headers->get('referer');
+public function show(Request $request, Group $group, PostRepository $postRepository, LikeRepository $likeRepository): Response
+{
 
-        if (!$group) {
-            throw $this->createNotFoundException('The group does not exist');
-        }
+    $user = $this->getUser();
+    $post = new Post();
+    $form = $this->createForm(PostType::class, $post);
+    $form->handleRequest($request);
+    $post->setUser($user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setGroupe($group);
-            $postRepository->save($post, true);
+    $referer = $request->headers->get('referer');
 
-            return $this->redirect($referer);
-        }
-
-        $posts = $group->getPosts();
-        foreach ($posts as $post) {
-            $postRepository->updatePostLikes($post);
-        }
-
-
-        return $this->render('group/show.html.twig', [
-            'group' => $group,
-            'post' => $post,
-            'form' => $form->createView(),
-        ]);
+    if (!$group) {
+        throw $this->createNotFoundException('The group does not exist');
     }
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $post->setGroupe($group);
+        $postRepository->save($post, true);
+
+        return $this->redirect($referer);
+    }
+
+    $commentary = new Commentary();
+    $formCommentary = $this->createForm(CommentaryType::class, $commentary);
+    $formCommentary->handleRequest($request);
+    $commentary->setUser($user);
+    // $commentary->setPost($post); // Commentez cette ligne
+
+    $posts = $group->getPosts();
+    foreach ($posts as $post) {
+        $postRepository->updatePostLikes($post);
+    }
+
+    return $this->render('group/show.html.twig', [
+        'group' => $group,
+        'post' => $post,
+        'form' => $form->createView(),
+        'formCommentary' => $formCommentary->createView(),
+        'referer' => $referer,
+    ]);
+}
+
 
     #[Route('/{id}/edit', name: 'app_group_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Group $group, GroupRepository $groupRepository): Response
