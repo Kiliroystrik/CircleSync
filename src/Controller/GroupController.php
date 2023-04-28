@@ -122,4 +122,19 @@ class GroupController extends AbstractController
         //redirect to app_group_show page
         return $this->redirectToRoute('app_group_show', ['id' => $groupId], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/leave_group/{groupId}', name: 'app_leave_group')]
+    public function leaveGroup(int $groupId, GroupManagerService $groupManagerService, UserRepository $userRepository): Response
+    {
+        // Récupérez l'utilisateur connecté
+        /** @var User $user */
+        $user = $this->getUser();
+        $user = $userRepository->find($user);
+
+        // Utilisez le service GroupManagerService pour ajouter l'utilisateur au groupe
+        $groupManagerService->leaveGroup($groupId, $user);
+
+        //redirect to app_group_show page
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    }
 }
