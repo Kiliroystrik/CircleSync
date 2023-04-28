@@ -1,38 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - CircleSync{% endblock %}
+{% block title %}Accueil - CircleSync
+{% endblock %}
 
 {% block body %}
-    <section class="bg-blue-600 text-white py-12">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-semibold">Rejoignez CircleSync et découvrez des groupes qui partagent vos centres d'intérêt !</h1>
-        </div>
-    </section>
+	<section class="bg-blue-600 text-white py-12">
+		<div class="container mx-auto px-4">
+			<h1 class="text-4xl font-semibold">Rejoignez CircleSync et découvrez des groupes qui partagent vos centres d'intérêt !</h1>
+		</div>
+	</section>
 
-    <section class="py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-semibold mb-6">Choisissez un groupe</h2>
-            <p class="text-lg">Rejoignez un groupe parmi ceux disponibles et rejoignez le cercle de vos collègues.</p>
-        </div>
-    </section>
+	<section class="py-16">
+		<div class="container mx-auto px-4">
+			<h2 class="text-3xl font-semibold mb-6">Choisissez un groupe</h2>
+			<p class="text-lg">Rejoignez un groupe parmi ceux disponibles et rejoignez le cercle de vos collègues.</p>
+		</div>
+	</section>
 
-    <section class="py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-semibold mb-6">Groupes disponibles</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {% for group in groups %}
-                    <div class="group bg-white shadow rounded p-6">
-                        <h3 class="group-title text-2xl font-semibold mb-4">
-                            <a href="{{ path('app_group_show', {'id': group.id}) }}" class="text-blue-600 hover:text-blue-500">{{ group.name }}</a>
-                        </h3>
-                        <ul class="group-members space-y-2">
-                            {% for user in group.users %}
-                                <li class="group-member text-gray-700">{{ user.lastname }} {{ user.firstname }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+	<section class="py-16">
+		<div class="container mx-auto px-4">
+			<h2 class="text-3xl font-semibold mb-6">Groupes disponibles</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{% for group in groups %}
+					<div class="group bg-white shadow rounded p-6">
+						<h3 class="group-title text-2xl font-semibold mb-4">
+							{{ group.name }}
+						</h3>
+						<ul class="group-members space-y-2">
+							{% for user in group.users %}
+								<li class="group-member text-gray-700">{{ user.lastname }}
+									{{ user.firstname }}</li>
+							{% endfor %}
+						</ul>
+						<a href="{{ path('app_join_group', {'groupId': group.id}) }}" class="inline-block mt-4 px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" onclick="return confirm('Voulez-vous vraiment rejoindre ce groupe ?');">Rejoindre le groupe</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
 {% endblock %}
